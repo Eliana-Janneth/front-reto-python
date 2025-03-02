@@ -1,38 +1,49 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+
 defineProps<{
     toggleSidebar: () => void
-    sidebarOpen: boolean    
+    sidebarOpen: boolean
     toggleProfileMenu: () => void
     profileMenuOpen: boolean
     profileDropdown: object
 }>()
+
+const router = useRouter()
+
+const logout = () => {
+    localStorage.clear()
+    router.push('/login')
+}
+const username = localStorage.getItem('username') || 'John Doe'
+const avatarUrl = localStorage.getItem('avatarUrl') || 'https://api.dicebear.com/9.x/fun-emoji/svg'
+
+const usernameWithoutDomain = computed(() => {
+    return username.split('@')[0] || username
+})
 </script>
 
 <template>
-    <header class="z-10 py-4 bg-white shadow-sm">
+    <header class="z-10 py-4 shadow-sm bg-gray-800 bg-opacity-80">
         <div class="flex items-center justify-between px-4">
             <div class="flex items-center">
-                <button @click="toggleSidebar" class="p-1 mr-4 rounded-md hover:bg-gray-200">
-                    <span class="material-icons">{{ sidebarOpen ? 'menu_open' : 'menu' }}</span>
+                <button @click="toggleSidebar" class="p-1 mr-4 rounded-md hover:bg-purple-700">
+                    <span class="material-icons text-white">{{ sidebarOpen ? 'menu_open' : 'menu' }}</span>
                 </button>
-                <h2 class="text-xl font-semibold text-gray-800">Welcome Back</h2>
+                <h2 class="text-xl font-semibold text-white">Vulnerabilities API</h2>
             </div>
 
             <div class="flex items-center space-x-4">
-                <button class="p-1 rounded-full hover:bg-gray-200 relative">
-                    <span class="material-icons">notifications</span>
-                    <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
-                </button>
-
                 <div class="relative" ref="profileDropdown">
                     <button @click="toggleProfileMenu" class="flex items-center space-x-2 focus:outline-none">
                         <img
                             class="w-8 h-8 rounded-full object-cover border-2 border-gray-200"
-                            src="https://randomuser.me/api/portraits/men/1.jpg"
+                            :src="avatarUrl"
                             alt="User avatar"
                         />
-                        <span class="hidden md:block text-sm font-medium text-gray-700">John Doe</span>
-                        <span class="material-icons text-gray-600 text-sm">
+                        <span class="hidden md:block text-sm font-medium text-white">{{ usernameWithoutDomain }}</span>
+                        <span class="material-icons text-sm text-white">
                             {{ profileMenuOpen ? 'arrow_drop_up' : 'arrow_drop_down' }}
                         </span>
                     </button>
@@ -45,9 +56,12 @@ defineProps<{
                             'scale-95 opacity-0': !profileMenuOpen,
                         }"
                     >
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        <button
+                            class="block px-4 py-2 text-sm w-full text-purple-800 hover:bg-purple-100 hover:text-purple-800 transition-colors duration-300"
+                            @click="logout"
+                        >
+                            Log out!
+                        </button>
                     </div>
                 </div>
             </div>

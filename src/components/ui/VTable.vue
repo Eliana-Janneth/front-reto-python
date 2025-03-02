@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { VSpinner } from '@components'
 
 interface Column {
     header: string
@@ -54,25 +55,26 @@ const sortData = (key: string) => {
 
 const paginatedData = computed(() => {
     if (!props.pagination) return sortedData.value
-
     const start = (props.pagination.currentPage - 1) * 10
     const end = start + 10
     return sortedData.value.slice(start, end)
 })
-
 </script>
-<template>
-    <div class="relative overflow-x-auto rounded-lg shadow-sm">
-        <div v-if="loading" class="p-4 text-center text-gray-500">Cargando datos...</div>
 
-        <div v-else-if="error" class="p-4 text-center text-red-500">
+<template>
+    <div class="relative overflow-x-auto rounded-lg shadow-md bg-gray-800">
+        <div v-if="loading" class="p-8 text-center text-white">
+            <VSpinner />
+        </div>
+
+        <div v-else-if="error" class="p-8 text-center text-red-500">
             {{ error }}
         </div>
 
-        <div v-else-if="!data?.length" class="p-4 text-center text-gray-500">No se encontraron registros</div>
+        <div v-else-if="!data?.length" class="p-8 text-center text-gray-400">No records found</div>
 
-        <table v-else class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <table v-else class="w-full text-sm text-left text-gray-300">
+            <thead class="text-xs uppercase bg-gray-700 text-gray-300">
                 <tr>
                     <th
                         v-for="(column, index) in columns"
@@ -86,9 +88,22 @@ const paginatedData = computed(() => {
                             <button
                                 v-if="column.sortable"
                                 @click="sortData(column.key)"
-                                class="p-1 hover:bg-gray-200 rounded"
+                                class="p-1 hover:bg-gray-600 rounded transition-colors duration-200"
                             >
-                                ↗️
+                                <svg
+                                    class="w-4 h-4"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"
+                                    ></path>
+                                </svg>
                             </button>
                         </div>
                     </th>
@@ -96,57 +111,58 @@ const paginatedData = computed(() => {
             </thead>
 
             <tbody>
-    <tr
-        v-for="(item, rowIndex) in paginatedData"
-        :key="rowIndex"
-        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
-        @click="emit('row-click', item)"
-    >
-        <td v-for="(column, colIndex) in columns" :key="colIndex" class="px-6 py-4">
-            <slot
-                v-if="column.component || $slots[column.key]"
-                :name="column.key"
-                :row="item"
-                :action="handleAction"
-            >
-                <component
-                    v-if="column.component"
-                    :is="column.component"
-                    :row="item"
-                    @action="(action: string) => handleAction(action, item)"
-                />
-            </slot>
-            <span v-else>
-                {{ item[column.key] }}
-            </span>
-        </td>
-    </tr>
-</tbody>
-
+                <tr
+                    v-for="(item, rowIndex) in paginatedData"
+                    :key="rowIndex"
+                    class="bg-gray-800 border-b border-gray-700 hover:bg-gray-700 transition-colors duration-200"
+                    @click="emit('row-click', item)"
+                >
+                    <td v-for="(column, colIndex) in columns" :key="colIndex" class="px-6 py-4">
+                        <slot
+                            v-if="column.component || $slots[column.key]"
+                            :name="column.key"
+                            :row="item"
+                            :action="handleAction"
+                        >
+                            <component
+                                v-if="column.component"
+                                :is="column.component"
+                                :row="item"
+                                @action="(action) => handleAction(action, item)"
+                            />
+                        </slot>
+                        <span v-else>
+                            {{ item[column.key] }}
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
         </table>
 
-        <!-- Paginación -->
         <div
             v-if="pagination && pagination.totalPages > 1"
-            class="flex items-center justify-between px-4 py-3 bg-white"
+            class="flex items-center justify-between px-4 py-3 bg-gray-800 border-t border-gray-700"
         >
-            <div class="text-sm text-gray-700">
-                Página {{ pagination?.currentPage || 1 }} de {{ pagination?.totalPages || 1 }}
+            <div class="text-xs text-gray-400">
+                Page {{ pagination?.currentPage || 1 }} of {{ pagination?.totalPages || 1 }}
             </div>
-            <div class="flex gap-2">
+            <div class="flex gap-2 text-sm">
                 <button
                     @click="emit('page-change', pagination.currentPage - 1)"
                     :disabled="pagination.currentPage <= 1"
-                    class="px-4 py-2 text-gray-700 bg-gray-100 rounded hover:bg-gray-200 disabled:opacity-50"
+                    class="px-4 py-2 text-gray-300 bg-gray-700 rounded gap-1 hover:bg-gray-600 disabled:opacity-50 transition-colors duration-200 flex items-center"
                 >
-                    Anterior
+                <span class="material-icons" style="font-size: 14px;"> arrow_back_ios </span>
+
+                    Previous
                 </button>
                 <button
                     @click="emit('page-change', pagination.currentPage + 1)"
                     :disabled="pagination.currentPage >= pagination.totalPages"
-                    class="px-4 py-2 text-gray-700 bg-gray-100 rounded hover:bg-gray-200 disabled:opacity-50"
+                    class="px-4 py-2 text-gray-300 bg-gray-700 rounded hover:bg-gray-600 gap-1 disabled:opacity-50 transition-colors duration-200 flex items-center"
                 >
-                    Siguiente
+                    Next
+                    <span class="material-icons" style="font-size: 14px;"> arrow_forward_ios </span>
                 </button>
             </div>
         </div>

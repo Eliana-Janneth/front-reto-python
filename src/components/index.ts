@@ -4,3 +4,8 @@ export { default as VSidebar } from './ui/VSidebar.vue';
 export { default as VTable } from './ui/VTable.vue';
 export { default as VPopup } from './ui/VPopup.vue';
 export { default as DetailVulnerability } from './DetailVulnerability.vue';
+export { default as VSpinner } from './ui/VSpinner.vue';
+export { default as VCard } from './ui/VCard.vue';
+export { default as VButton } from './ui/VButton.vue';
+export { default as VInput } from './ui/VInput.vue';
+export { default as FixedVulnerability } from './FixedVulnerability.vue';

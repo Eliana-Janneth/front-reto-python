@@ -1,2 +1,5 @@
 export { default as VulnerabilityView } from './VulnerabilityView.vue'
 export { default as VulnerabilityFixedView } from './VulnerabilityFixedView.vue'
+export { default as LoginView } from './LoginView.vue'
+export { default as VulnerabilitySummaryView } from './VulnerabilitySummaryView.vue'
+export {default as RegisterView} from './RegisterView.vue'

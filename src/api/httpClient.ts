@@ -6,8 +6,7 @@ const httpClient = axios.create({
 });
 
 httpClient.interceptors.request.use((config) => {
-//   const token = localStorage.getItem('authToken');
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQwODQ5ODgxLCJpYXQiOjE3NDA3NjM0ODEsImp0aSI6ImY1YjFiMGE1YzNkMzQ2MWViY2JiNThkOTk3MzE1MzUyIiwidXNlcl9pZCI6MX0.B7YGwd0TpHn4VbGT6pav4YuwAzhphIJy6rOQzKcIy3M"
+  const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

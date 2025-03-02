@@ -8,11 +8,10 @@ const profileMenuOpen = ref(false)
 const profileDropdown = ref(null)
 
 const menuItems = ref([
-    { name: 'Vulnerabilidades', icon: 'analytics', path: '/vulnerabilities', active: true },
-    { name: 'Vulnerabilidades Pendientes', icon: 'folder', path: '/vulnerabilities-fixed', active: false },
-    { name: 'Calendar', icon: 'calendar_today', path: '#', active: false },
-    { name: 'Messages', icon: 'chat', path: '#', active: false },
-    { name: 'Settings', icon: 'settings', path: '#', active: false },
+    { name: 'Vulnerabilities', icon: 'troubleshoot', path: '/vulnerabilities', active: true },
+    { name: 'Vulnerabilities to fix', icon: 'pending', path: '/vulnerabilities-fixed', active: false },
+    { name: 'Summary', icon: 'analytics', path: '/vulnerabilities-summary', active: false },
+
 ])
 
 const toggleSidebar = () => {
@@ -68,7 +67,7 @@ onUnmounted(() => {
                 :sidebarOpen="sidebarOpen"
             />
 
-            <main class="flex-1 overflow-y-auto p-6 bg-gray-100">
+            <main class="flex-1 overflow-y-auto p-6 bg-gray-500">
                 <div class="max-w-7xl mx-auto">
                     <router-view />
                 </div>

@@ -18,3 +18,31 @@ export interface ApiResponseFixed<T> {
   total_non_fixed: number;
   data: T;
 }
+
+export interface VulnerabilitySummary {
+  id: number;
+  severity: string;
+  access_vector: string;
+  exploitability: string;
+  impact: string;
+  access_complexity: string;
+  authentication: string;
+  vulnerability: Vulnerability;
+  source_identifier: string;
+}
+
+export interface VulnerabilityCategory {
+  total: number;
+  vulnerabilities: VulnerabilitySummary[];
+}
+
+export interface ApiResponseSummary {
+  HIGH: VulnerabilityCategory;
+  MEDIUM: VulnerabilityCategory;
+  LOW: VulnerabilityCategory;
+}
+
+export interface FixedVulnerability {
+  cve_id: string;
+  fixed: boolean;
+}
