@@ -1,0 +1,14 @@
+services:
+  vulnerabilities-ft:
+    image: node:20.16.0-alpine
+    container_name: vulnerabilities-ft
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    ports:
+      - 5173:5173
+    command: sh -c "npm install && npm run prod"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    restart: unless-stopped
