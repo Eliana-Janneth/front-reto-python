@@ -31,7 +31,7 @@ npm install
 Crear un archivo `.env` en la raíz del proyecto con el siguiente contenido:
 
 ```env
-VITE_API_URL=http://3.147.187.32:8000/api
+VITE_API_URL=http://3.147.187.32/api
 ```
 
 ### 4️⃣ Ejecutar el Proyecto
