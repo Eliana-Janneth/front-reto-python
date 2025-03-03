@@ -35,12 +35,7 @@ const routes: RouteRecordRaw[] = [
     path: '/register',
     name: 'register',
     component: RegisterView
-  }
-  // {
-  //   path: '/:pathMatch(.*)*', // 🔥 Página 404 Not Found
-  //   name: 'not-found',
-  //   component: () => import('@views/NotFoundView.vue')
-  // }
+
 ];
 export const router = createRouter({
   history: createWebHistory(),
@@ -48,10 +43,10 @@ export const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = !!localStorage.getItem('token') // 🔥 Lógica de autenticación
+  const isAuthenticated = !!localStorage.getItem('token')
 
   if (to.path !== '/login' && to.path !== '/register' && !isAuthenticated) {
-    next('/login') // 🔥 Si no está autenticado, lo manda a login
+    next('/login') 
   } else {
     next()
   }
